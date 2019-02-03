@@ -1,0 +1,3 @@
+可初始化Hexo博客（卷）、并启动一个服务器被语雀hook调用，动态同步语雀文章并自动deploy到git服务器的docker镜像，自用
+https://luan.ma/post/yuque2blog/
+请使用 SSH 方式登录 Git 服务器，并在第一次运行 docker 时加上 -it 选项，便于复制公钥和观察情况。

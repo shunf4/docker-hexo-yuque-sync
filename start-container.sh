@@ -1,0 +1,1 @@
+docker run -it -e HEXO_SITENAME=hexo-site -e YUQUE_USERLOGIN=yuque-username -e YUQUE_REPO=yuque-repository-name -e GIT_USER_EMAIL=username@example.com -e GIT_USER_NAME=git-user-name -e GIT_REMOTE_URL="git@github.com:username/username.github.io.git" -e YUQUE_WEBHOOK_AUTODEPLOY=1 -v /var/lib/blog:/blog -p 35125:32125 --restart=always hexo-yuque-sync
