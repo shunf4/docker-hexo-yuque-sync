@@ -15,7 +15,7 @@ if [ ! -f "_config.yml" ]; then
 	npm --registry=https://registry.npm.taobao.org install hexo-deployer-git --save
 
 	printf "\n[Configuring hexo directory...]\n"
-	sed -r 's/^(\s*)"name"(\s*:\s*)".*"/\1"name"\2"'$HEXO_SITENAME'"/g;$i\,\n  "yuqueConfig": {\n    "baseUrl": "https://www.yuque.com/api/v2",\n    "login": "'$YUQUE_USERLOGIN'",\n    "repo": "'$YUQUE_REPO'",\n    "mdNameFormat": "slug",\n    "postPath": "source/_posts/yuque"\n  },\n  "scripts": {\n    "sync-gen": "yuque-hexo sync && hexo g",\n    "sync-gen-deploy": "yuque-hexo sync && hexo g -d"\n  }' -i package.json
+	sed -r 's/^(\s*)"name"(\s*:\s*)".*"/\1"name"\2"'$HEXO_SITENAME'"/g;$i\,\n  "yuqueConfig": {\n    "baseUrl": "https://www.yuque.com/api/v2",\n    "login": "'$YUQUE_USERLOGIN'",\n    "repo": "'$YUQUE_REPO'",\n    "mdNameFormat": "slug",\n    "postPath": "source/_posts/yuque"\n  },\n  "scripts": {\n    "sync-gen": "yuque-hexo clean && yuque-hexo sync && hexo g",\n    "sync-gen-deploy": "yuque-hexo clean && yuque-hexo sync && hexo g -d"\n  }' -i package.json
 
 	perl -0777 -i.backup -pe 's/deploy:(\s*)\n(\s*)type:([ \t]+[^\n]*\n)*/deploy:\1\n\2type: git\n\2repository: '$GIT_REMOTE_URL'\n\2branch: '$GIT_DEPLOY_BRANCH'\n\n/g' _config.yml
 fi
