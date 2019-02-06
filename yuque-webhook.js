@@ -46,7 +46,7 @@ server.on("request", (req, res) => {
         }
 
         console.log(`Request received. Now run ${syncDo}...`);
-        const syncProc = spawn('npm', ['--prefix=/blog', 'run', syncDo]);
+        const syncProc = spawn('sh', ["-c", `cd /blog ; npm run ${syncDo}`]);
         let outStringChunks = [];
         let errStringChunks = [];
         syncProc.stdout.on("data", (data) => {
