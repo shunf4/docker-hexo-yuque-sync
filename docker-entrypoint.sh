@@ -22,7 +22,7 @@ if [ ! -f "_config.yml" ]; then
 	npm --registry=https://registry.npm.taobao.org install hexo-deployer-git --save
 
 	printf "\n[Configuring hexo directory...]\n"
-	sed -r 's/^(\s*)"name"(\s*:\s*)".*"/\1"name"\2"'$HEXO_SITENAME'"/g;$i\,\n  "yuqueConfig": {\n    "baseUrl": "https://www.yuque.com/api/v2",\n    "login": "'$YUQUE_USERLOGIN'",\n    "repo": "'$YUQUE_REPO'",\n    "mdNameFormat": "slug",\n    "postPath": "source/_posts/yuque"\n  },\n  "scripts": {\n    "sync-gen": "echo [yuque-hexo clean] && yuque-hexo clean && echo [yuque-hexo sync] && yuque-hexo sync && echo [git add and commit] && git add . && git commit -am \\\"`date`\\\" && echo [hexo g] ; hexo g && echo [chown] && chown --reference=. . -R && echo [chown root] && chown root:root .git-credentials ; chown root:root .ssh -R",\n    "sync-gen-deploy": "echo [yuque-hexo clean] && yuque-hexo clean && echo [yuque-hexo sync] && yuque-hexo sync && echo [git add and commit] && git add . && git commit -am \\\"`date`\\\" && echo [chown] && chown --reference=. . -R && echo [chown root] &&  echo [hexo g -d] && hexo g -d && chown root:root .git-credentials ; chown root:root .ssh -R"\n  }' -i package.json
+	sed -r 's/^(\s*)"name"(\s*:\s*)".*"/\1"name"\2"'$HEXO_SITENAME'"/g;$i\,\n  "yuqueConfig": {\n    "baseUrl": "https://www.yuque.com/api/v2",\n    "login": "'$YUQUE_USERLOGIN'",\n    "repo": "'$YUQUE_REPO'",\n    "mdNameFormat": "slug",\n    "postPath": "source/_posts/yuque"\n  },\n  "scripts": {\n    "sync-gen": "echo [yuque-hexo clean] && yuque-hexo clean && echo [yuque-hexo sync] && yuque-hexo sync && echo [git add and commit] && git add . && git commit -am \\\"`date`\\\" ; echo [hexo g] ; hexo g && echo [chown] && chown --reference=. . -R && echo [chown root] && chown root:root .git-credentials ; chown root:root .ssh -R",\n    "sync-gen-deploy": "echo [yuque-hexo clean] && yuque-hexo clean && echo [yuque-hexo sync] && yuque-hexo sync && echo [git add and commit] && git add . && git commit -am \\\"`date`\\\" ; echo [chown] && chown --reference=. . -R && echo [chown root] &&  echo [hexo g -d] && hexo g -d && chown root:root .git-credentials ; chown root:root .ssh -R"\n  }' -i package.json
 	perl -0777 -i.backup -pe 's/deploy:(\s*)\n(\s*)type:([ \t]+[^\n]*\n)*/deploy:\1\n\2type: git\n\2repository: '$GIT_REMOTE_URL'\n\2branch: '$GIT_DEPLOY_BRANCH'\n\n/g' _config.yml
 
 	echo "" >> .gitignore	
@@ -37,6 +37,8 @@ if [ ! -f "_config.yml" ]; then
 	git commit -am "First commit @ `date`"
 	chown --reference=. . -R
 fi
+
+git config --local receive.denyCurrentBranch updateInstead
 
 if [ $YUQUE_WEBHOOK_AUTODEPLOY ]; then
 	printf "\n[Configuring git...]\n\n"
@@ -79,6 +81,7 @@ case ${1} in
 	else
 		DEPLOY=sync-gen
 	fi
+	sh -c "cd /blog ; npm run $DEPLOY"
 	sh -c "cd /blog ; npm run $DEPLOY"
         printf "\n[Starting Webhook server...]\n"
         node /usr/bin/yuque-webhook.js
