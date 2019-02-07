@@ -36,7 +36,12 @@ case ${1} in
 			git status
 			git commit -am "First commit @ `date`"
 			
-			chown --reference=. . -R
+			shopt -s dotglob
+			for f in ./* ; do
+				if [ $f != "./node_modules" ]; then
+					chown --reference=. $f -R
+				fi
+			done
 		fi
 
 		git config --local receive.denyCurrentBranch updateInstead

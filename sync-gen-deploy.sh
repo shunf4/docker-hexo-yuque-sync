@@ -25,6 +25,7 @@ hexo g -d
 echo
 echo [chown]
 echo
+shopt -s dotglob
 for f in ./* ; do
     if [ $f != "./node_modules" ]; then
         chown --reference=. $f -R

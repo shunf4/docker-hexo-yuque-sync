@@ -1,3 +1,5 @@
 可初始化Hexo博客（卷）、并启动一个服务器被语雀hook调用，动态同步语雀文章并自动deploy到git服务器的docker镜像，自用
 https://luan.ma/post/yuque2blog/
 请使用 SSH 方式登录 Git 服务器，并在第一次运行 docker 时加上 -it 选项，便于复制公钥和观察情况。可参照 start-container.sh 启动容器。
+卷内几乎所有文件都会依照卷文件夹的所有者来设置所有者。如果想要让某个特殊用户账户拥有博客卷，可以设置卷目录的所有者为该用户。
+
